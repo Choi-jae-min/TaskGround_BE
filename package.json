@@ -2,9 +2,12 @@
   "name": "taskground_be",
   "version": "1.0.0",
   "description": "팀이 이슈/작업을 생성·배정·추적할 수 있는 웹앱 서버",
-  "main": "index.js",
+  "main": "dist/server.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "NODE_OPTIONS='--loader ts-node/esm' node --watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
   "repository": {
     "type": "git",
@@ -13,12 +16,17 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/Choi-jae-min/TaskGround_BE/issues"
   },
   "homepage": "https://github.com/Choi-jae-min/TaskGround_BE#readme",
   "dependencies": {
+    "@fastify/autoload": "^6.3.1",
     "fastify": "^5.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }
