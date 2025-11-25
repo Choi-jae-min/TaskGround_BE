@@ -1,12 +1,11 @@
 import { FastifyPluginAsync } from "fastify";
-import { db } from "../db/db.js";
 import { products } from "../db/schema/products.js";
 import { desc } from "drizzle-orm";
 
 const taskRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     fastify.get("/workspace", async (request, reply) => {
         try {
-            const rows = await db
+            const rows = await fastify.db
                 .select({
                     id: products.id,
                     createdAt: products.createdAt,
@@ -20,7 +19,7 @@ const taskRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
                 workspaces: rows,
             };
         } catch (err) {
-            request.log.error({ err }, "❌ Failed to fetch workspaces");
+            request.log.error({ err }, "Failed to fetch workspaces");
             return reply.status(500).send({
                 ok: false,
                 error: (err as Error).message,
