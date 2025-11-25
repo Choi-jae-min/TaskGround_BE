@@ -1,13 +1,32 @@
 import { FastifyPluginAsync } from "fastify";
+import { db } from "../db/db.js";
+import { products } from "../db/schema/products.js";
+import { desc } from "drizzle-orm";
 
 const taskRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     fastify.get("/workspace", async (request, reply) => {
-        return { hello: "world" };
-    });
+        try {
+            const rows = await db
+                .select({
+                    id: products.id,
+                    createdAt: products.createdAt,
+                })
+                .from(products)
+                .orderBy(desc(products.createdAt));
 
-    // fastify.post("/tasks" , async (request,reply) => {
-    //
-    // })
+            return {
+                ok: true,
+                count: rows.length,
+                workspaces: rows,
+            };
+        } catch (err) {
+            request.log.error({ err }, "❌ Failed to fetch workspaces");
+            return reply.status(500).send({
+                ok: false,
+                error: (err as Error).message,
+            });
+        }
+    });
 };
 
 export default taskRoutes;
