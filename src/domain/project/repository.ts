@@ -1,10 +1,10 @@
-import { schema } from "../db/schema/index.js";
-import {NodePgDatabase} from "drizzle-orm/node-postgres";
+import { NodePgDatabase } from "drizzle-orm/node-postgres";
+import {schema} from "../../db/schema/index.js";
 
-export class ProjectService {
+export class ProjectRepository {
     constructor(private db: NodePgDatabase<typeof schema>) {}
 
-    async getProjectList(limit: number, offset: number) {
+    async findMany(limit: number, offset: number) {
         const rows = await this.db
             .select()
             .from(schema.project)
@@ -26,13 +26,27 @@ export class ProjectService {
         };
     }
 
-    // async getProjectById(id: string) {
+    // async findById(id: string) {
     //     return await this.db.query.projects.findFirst({
     //         where: (projects, { eq }) => eq(projects.id, id),
     //     });
     // }
     //
-    // async createProject(data: InsertProject) {
+    // async create(data: InsertProject) {
     //     return await this.db.insert(schema.projects).values(data).returning();
+    // }
+    //
+    // async update(id: string, data: Partial<InsertProject>) {
+    //     return await this.db
+    //         .update(schema.projects)
+    //         .set(data)
+    //         .where(eq(schema.projects.id, id))
+    //         .returning();
+    // }
+    //
+    // async delete(id: string) {
+    //     return await this.db
+    //         .delete(schema.projects)
+    //         .where(eq(schema.projects.id, id));
     // }
 }
