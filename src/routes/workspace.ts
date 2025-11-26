@@ -51,21 +51,22 @@ const workspaceRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void>
         try {
             const { id } = request.params as { id: string };
 
-            const [row] = await fastify.db
-                .select()
-                .from(workspaces)
-                .where(eq(workspaces.id, id))
-                .limit(1);
+            const workspace = await fastify.db.query.workspaces.findFirst({
+                where: eq(workspaces.id, id),
+                with: {
+                    members: true,
+                    projects: true,
+                },
+            });
 
-
-            if (!row) {
+            if (!workspace) {
                 return reply.status(404).send({
                     ok: false,
                     error: "Workspace not found",
                 });
             }
 
-            return { ok: true, workspace: row };
+            return { ok: true, workspace: workspace };
         } catch (err) {
             request.log.error({ err }, "Failed to fetch workspace by id");
             return reply.status(500).send({

@@ -7,7 +7,7 @@ import {
     uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-import {project} from "./project";
+import {project} from "./project.js";
 // import { users } from "./users"; // 유저 테이블 있다고 가정
 
 export const workspaceMemberStatusEnum = pgEnum("workspace_member_status", [

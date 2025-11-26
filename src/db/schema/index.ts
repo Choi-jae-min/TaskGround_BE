@@ -1,6 +1,6 @@
-import * as workspaceSchema from "./workSpace";
-import * as boardSchema from "./board";
-import * as projectSchema from "./project";
+import * as workspaceSchema from "./workSpace.js";
+import * as boardSchema from "./board.js";
+import * as projectSchema from "./project.js";
 
 export const schema = {
     ...workspaceSchema,
