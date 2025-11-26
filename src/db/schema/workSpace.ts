@@ -7,6 +7,7 @@ import {
     uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+import {project} from "./project";
 // import { users } from "./users"; // 유저 테이블 있다고 가정
 
 export const workspaceMemberStatusEnum = pgEnum("workspace_member_status", [
@@ -61,8 +62,8 @@ export const workspaceMembers = pgTable(
 );
 
 export const workspacesRelations = relations(workspaces, ({ many, one }) => ({
-    members: many(workspaceMembers), // workspaces → workspace_members (1:N)
-
+    members: many(workspaceMembers),
+    projects : many(project)
     // owner: users 테이블이 있다면 활성화
     // owner: one(users, {
     //   fields: [workspaces.ownerId],
