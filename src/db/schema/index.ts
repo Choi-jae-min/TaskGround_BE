@@ -1,1 +1,5 @@
-export * from "./products.js";
+import * as workspaceSchema from "./workSpace.js";
+
+export const schema = {
+    ...workspaceSchema,
+};
