@@ -6,6 +6,7 @@ import { dirname, join } from "path";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import databasePlugin from "./plugins/database.js";
+import servicesPlugin from "./plugins/service.js";
 import {swaggerOptions, swaggerUiOptions} from "./lib/swagger.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -20,6 +21,7 @@ const app: FastifyPluginAsync = async (fastify, opts) => {
     await fastify.register(fastifySwagger, swaggerOptions)
     await fastify.register(fastifySwaggerUi, swaggerUiOptions)
     await fastify.register(databasePlugin);
+    await fastify.register(servicesPlugin);
 
     fastify.register((app, options, done) => {
         app.get("/", {
