@@ -2,6 +2,16 @@ import "dotenv/config";
 import Fastify from "fastify";
 import app from "./app.js";
 
+const signals = ["SIGINT", "SIGTERM"];
+
+signals.forEach((signal) => {
+    process.on(signal, async () => {
+        fastify.log.info(`📥 Received ${signal}, shutting down gracefully...`);
+        await fastify.close();
+        process.exit(0);
+    });
+});
+
 const fastify = Fastify({ logger: true });
 
 try {
