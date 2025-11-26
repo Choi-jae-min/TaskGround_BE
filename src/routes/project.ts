@@ -11,8 +11,7 @@ const workspaceRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void>
                 limit?: number;
                 offset?: number;
             };
-
-            return await fastify.projectService.getProjectList(limit, offset);
+            return await fastify.services.project.getProjectList(limit,offset)
 
         } catch (err) {
             request.log.error({ err }, "Failed to fetch workspaces");
