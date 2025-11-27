@@ -14,26 +14,7 @@ const workspaceRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void>
                 offset?: number;
             };
 
-            const rows = await fastify.db
-                .select()
-                .from(workspaces)
-                .limit(Number(limit))
-                .offset(Number(offset))
-                .orderBy(desc(workspaces.createdAt));
-
-            const totalCount = await fastify.db
-                .select({ count: workspaces.id })
-                .from(workspaces);
-
-            return {
-                ok: true,
-                pagination: {
-                    limit,
-                    offset,
-                    total: totalCount.length,
-                },
-                items: rows,
-            };
+            return await fastify.services.workspace.getWorkspaceByPagination(limit , offset)
         } catch (err) {
             request.log.error({ err }, "Failed to fetch workspaces");
             return reply.status(500).send({
@@ -51,22 +32,7 @@ const workspaceRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void>
         try {
             const { id } = request.params as { id: string };
 
-            const workspace = await fastify.db.query.workspaces.findFirst({
-                where: eq(workspaces.id, id),
-                with: {
-                    members: true,
-                    projects: true,
-                },
-            });
-
-            if (!workspace) {
-                return reply.status(404).send({
-                    ok: false,
-                    error: "Workspace not found",
-                });
-            }
-
-            return { ok: true, workspace: workspace };
+            return await fastify.services.workspace.getWorkspaceById(id)
         } catch (err) {
             request.log.error({ err }, "Failed to fetch workspace by id");
             return reply.status(500).send({
@@ -80,20 +46,23 @@ const workspaceRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void>
     // POST /workspace
     //    → 생성
     // ---------------------------------------------------------
-    fastify.post("/workspace", async (request, reply) => {
+    fastify.post("/workspace",{
+        schema : {
+            tags : ['workspace'],
+            body : {
+                type: "object",
+                required: ["name", "ownerId"],
+                properties: {
+                    name: { type: "string" },
+                    ownerId: { type: "string"},
+                    description: { type: "string" },
+                },
+            }
+        },
+    }, async (request, reply) => {
         try {
-            const body = request.body as { name: string; description?: string };
-
-            const created = await fastify.db.insert(workspaces).values({
-                name: body.name,
-                description: body.description ?? null,
-                ownerId: "TODO-USER-ID", // 실제 유저 ID를 JWT or session에서 가져오면 됨
-            }).returning();
-
-            return reply.status(201).send({
-                ok: true,
-                workspace: created[0],
-            });
+            const body = request.body as { name: string; ownerId:string; description?: string };
+            return await fastify.services.workspace.createWorkspace(body)
         } catch (err) {
             request.log.error({ err }, "Failed to create workspace");
             return reply.status(500).send({
