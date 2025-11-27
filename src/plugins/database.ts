@@ -21,10 +21,16 @@ const databasePlugin: FastifyPluginAsync = async (fastify, opts) => {
     const pool = new Pool({
         connectionString,
         ssl: { rejectUnauthorized: false },
-        max: 20,
+        max: 5,
         idleTimeoutMillis: 30000,
-        connectionTimeoutMillis: 2000,
+        connectionTimeoutMillis: 10000,
+        keepAlive: true,
+        keepAliveInitialDelayMillis: 10000,
     });
+
+    pool.on("error", (err) => {
+        console.error("Unexpected PG pool error:", err);
+    })
 
     try {
         const client = await pool.connect();
