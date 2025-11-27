@@ -18,6 +18,7 @@ export const board = pgTable("board", {
 });
 
 export const boardRelations = relations(
+
     board , ({one}) => ({
         project: one(project, {
             fields: [board.projectId],
