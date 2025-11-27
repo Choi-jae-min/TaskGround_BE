@@ -1,29 +1,20 @@
 import fp from "fastify-plugin";
 import {FastifyPluginAsync} from "fastify";
-import {ProjectRepository} from "../domain/project/repository.js";
-import {ProjectService} from "../domain/project/service.js";
+import {createDomains} from "../domain/registry.js";
 
 declare module "fastify" {
     interface FastifyInstance {
-        repositories: {
-            project: ProjectRepository;
-        };
-        services: {
-            project: ProjectService;
-        };
+        repositories: ReturnType<typeof createDomains>["repositories"];
+        services: ReturnType<typeof createDomains>["services"];
     }
 }
 
 const repositoriesPlugin: FastifyPluginAsync = async (fastify) => {
-    const projectRepo = new ProjectRepository(fastify.db);
+    const { repositories, services } = createDomains(fastify.db);
 
-    const projectService = new ProjectService(projectRepo);
-    fastify.decorate("repositories", {
-        project: projectRepo,
-    });
-    fastify.decorate("services", {
-        project: projectService,
-    });
+    fastify.decorate("repositories", repositories);
+    fastify.decorate("services", services);
+
 };
 
 export default fp(repositoriesPlugin, {

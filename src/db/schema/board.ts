@@ -17,7 +17,8 @@ export const board = pgTable("board", {
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });
 
-export const projectRelations = relations(
+export const boardRelations = relations(
+
     board , ({one}) => ({
         project: one(project, {
             fields: [board.projectId],
