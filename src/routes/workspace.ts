@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from "fastify";
-import { desc, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { workspaces } from "../db/schema/workSpace.js";
 
 const workspaceRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
