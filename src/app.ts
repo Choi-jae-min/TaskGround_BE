@@ -8,6 +8,7 @@ import fastifySwaggerUi from "@fastify/swagger-ui";
 import databasePlugin from "./plugins/database.js";
 import repositoriesPlugin from "./plugins/repositories.js";
 import {swaggerOptions, swaggerUiOptions} from "./lib/swagger.js";
+import fastifyCookie, { FastifyCookieOptions } from "@fastify/cookie";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -22,6 +23,9 @@ const app: FastifyPluginAsync = async (fastify, opts) => {
     await fastify.register(fastifySwaggerUi, swaggerUiOptions)
     await fastify.register(databasePlugin);
     await fastify.register(repositoriesPlugin);
+    fastify.register(fastifyCookie, {
+        secret: process.env.COOKIE_SECRET!,
+    } as FastifyCookieOptions);
 
     fastify.register((app, options, done) => {
         app.get("/", {

@@ -8,6 +8,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import {project} from "./project.js";
+import {users} from "./auth.js";
 // import { users } from "./users"; // 유저 테이블 있다고 가정
 
 export const workspaceMemberStatusEnum = pgEnum("workspace_member_status", [
@@ -39,8 +40,8 @@ export const workspaceMembers = pgTable(
             .notNull()
             .references(() => workspaces.id, { onDelete: "cascade" }),
         userId: uuid("user_id")
-            .notNull(),
-        // .references(() => users.id, { onDelete: "cascade" }) // 유저 테이블 생기면 연결
+            .notNull()
+        .references(() => users.id, { onDelete: "cascade" }),
         status: workspaceMemberStatusEnum("status")
             .notNull()
             .default("INVITED"),
@@ -63,12 +64,11 @@ export const workspaceMembers = pgTable(
 
 export const workspacesRelations = relations(workspaces, ({ many, one }) => ({
     members: many(workspaceMembers),
-    projects : many(project)
-    // owner: users 테이블이 있다면 활성화
-    // owner: one(users, {
-    //   fields: [workspaces.ownerId],
-    //   references: [users.id],
-    // }),
+    projects : many(project),
+    owner: one(users, {
+      fields: [workspaces.ownerId],
+      references: [users.id],
+    }),
 }));
 
 export const workspaceMembersRelations = relations(
@@ -78,12 +78,10 @@ export const workspaceMembersRelations = relations(
             fields: [workspaceMembers.workspaceId],
             references: [workspaces.id],
         }),
-
-        // user: users 테이블이 있다면 활성화
-        // user: one(users, {
-        //   fields: [workspaceMembers.userId],
-        //   references: [users.id],
-        // }),
+        user: one(users, {
+          fields: [workspaceMembers.userId],
+          references: [users.id],
+        }),
     }),
 );
 

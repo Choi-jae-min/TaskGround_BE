@@ -20,7 +20,7 @@ const databasePlugin: FastifyPluginAsync = async (fastify, opts) => {
 
     const pool = new Pool({
         connectionString,
-        ssl: { rejectUnauthorized: false },
+        // ssl: { rejectUnauthorized: false },
         max: 5,
         idleTimeoutMillis: 30000,
         connectionTimeoutMillis: 10000,
