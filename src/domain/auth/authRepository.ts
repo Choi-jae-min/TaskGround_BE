@@ -11,12 +11,34 @@ export class UserRepository {
     constructor(private db: NodePgDatabase<typeof schema>) {}
 
     async findUserByEmail(email : string ) {
-        const isUser = await this.db.query.users.findFirst({
-            where: eq(users.email , email)
-        })
+        return this.db.query.users.findFirst({
+            where: eq(users.email, email)
+        });
+    }
 
-        console.log('isUser' , isUser)
-        return !!isUser;
+    async signUp(email : string, passwordHash : string, name : string){
+        const [user] = await this.db
+            .insert(users)
+            .values({
+                email,
+                passwordHash,
+                name,
+            })
+            .returning();
+
+        return user;
+    }
+
+    async updateUserLastLoginAtById(id :string){
+        const [updated] = await this.db
+            .update(users)
+            .set({
+                lastLoginAt: new Date()
+            })
+            .where(eq(users.id, id))
+            .returning();
+
+        return updated;
     }
 //
 //     const workspace = await this.db.query.workspaces.findFirst({

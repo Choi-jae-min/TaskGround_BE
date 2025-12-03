@@ -1,0 +1,28 @@
+import { NodePgDatabase } from "drizzle-orm/node-postgres";
+import {workspaceMembers} from "../../../db/schema/workSpace.js";
+import {schema} from "../../../db/schema/index.js";
+import {eq} from "drizzle-orm";
+
+type MemberInsert = typeof workspaceMembers.$inferInsert;
+
+export type CreateMemberInput = Omit<MemberInsert, "id" | "createdAt" | "updatedAt">;
+
+export class MemberRepository {
+    constructor(private db: NodePgDatabase<typeof schema>) {}
+
+    async findMemberByWorkspaceId(workSpaceId : string) {
+        const rows = await this.db.query.workspaceMembers.findMany({
+            where: eq(workspaceMembers.workspaceId , workSpaceId),
+        })
+
+        const totalCount = await this.db
+            .select({ count: schema.workspaces.id })
+            .from(schema.workspaces);
+
+        return {
+            total: totalCount.length,
+            items: rows,
+        };
+    }
+
+}
