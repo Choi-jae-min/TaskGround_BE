@@ -35,7 +35,7 @@ export class WorkspaceRepository {
         const workspace = await this.db.query.workspaces.findFirst({
             where: eq(workspaces.id, id),
             with: {
-                // members: true,
+                members: true,
                 projects: true,
             },
         });
