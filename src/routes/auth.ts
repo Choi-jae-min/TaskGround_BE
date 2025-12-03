@@ -1,6 +1,4 @@
 import {FastifyPluginAsync} from "fastify";
-import {signAccessToken, signRefreshToken} from "../lib/jwt.js";
-
 
 const authRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     fastify.post("/login", async (request, reply) => {
@@ -10,17 +8,7 @@ const authRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
                 password: string;
             };
 
-            if (email !== "test@test.com" || password !== "1234") {
-                return reply.send({
-                    message: "이메일 또는 비밀번호가 올바르지 않습니다.",
-                    ok: false,
-                });
-            }
-
-            const userId = "user-1";
-
-            const accessToken = await signAccessToken({ sub: userId, email });
-            const refreshToken = await signRefreshToken({ sub: userId, email });
+            const {accessToken , refreshToken} = await fastify.services.auth.signIn(email,password);
 
             reply
                 .setCookie("access_token", accessToken, {
@@ -66,17 +54,14 @@ const authRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
     fastify.post("/signUp", async (request, reply) => {
         try {
-            // const { email, password,name } = request.body as {
-            //     email: string;
-            //     password: string;
-            //     name : string
-            // };
-            // return await fastify.services.auth.signUp(email,password,name)
+            const { email, password,name } = request.body as {
+                email: string;
+                password: string;
+                name : string
+            };
+            const user = await fastify.services.auth.signUp(email,password,name)
+            return reply.status(200).send(user)
 
-            return await fastify.services.auth.signUp("test@test.com",'asadsad','asdasd')
-
-            //로그인 로직
-            return {ok : true}
         } catch (err) {
             request.log.error({ err }, "Failed to fetch workspaces");
             return reply.status(500).send({
