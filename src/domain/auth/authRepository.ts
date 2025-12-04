@@ -16,6 +16,12 @@ export class UserRepository {
         });
     }
 
+    async findUserByEId(id : string ) {
+        return this.db.query.users.findFirst({
+            where: eq(users.id, id)
+        });
+    }
+
     async signUp(email : string, passwordHash : string, name : string){
         const [user] = await this.db
             .insert(users)

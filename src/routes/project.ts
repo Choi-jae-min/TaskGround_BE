@@ -22,6 +22,31 @@ const workspaceRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void>
         }
     });
 
+    fastify.post("/project",{
+        schema : {
+            tags : ['project'],
+            body : {
+                type :"object",
+                required: ["name", "workspaceId"],
+                properties: {
+                    name: { type: "string" },
+                    workspaceId: { type: "string"},
+                },
+            }
+        }
+    } ,async (request ,reply) => {
+        try {
+            const body = request.body as { name : string , workspaceId : string}
+
+            return await fastify.services.project.createProject(body)
+        }catch (err){
+            request.log.error({ err }, "Failed to fetch workspaces");
+            return reply.status(500).send({
+                ok: false,
+                error: (err as Error).message,
+            });
+        }
+    })
 };
 
 export default workspaceRoutes;

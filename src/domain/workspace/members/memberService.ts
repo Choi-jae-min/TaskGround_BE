@@ -21,7 +21,9 @@ export class MemberService {
     constructor(private memberRepo: MemberRepository) {}
 
     async getMemberByWorkSpaceId(workSpaceId : string) {
-        return await this.memberRepo.findMemberByWorkspaceId(workSpaceId);
+        const memberList = await this.memberRepo.findMemberByWorkspaceId(workSpaceId);
+
+        return memberList;
     }
 
     async addMemberToWorkspace(memberData : CreateMemberInput){

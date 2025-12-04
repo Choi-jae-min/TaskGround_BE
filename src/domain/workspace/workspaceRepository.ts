@@ -1,7 +1,7 @@
 import { NodePgDatabase } from "drizzle-orm/node-postgres";
 import {schema} from "../../db/schema/index.js";
 import {eq} from "drizzle-orm";
-import {workspaces} from "../../db/schema/workSpace.js";
+import {workspaceMembers, workspaces} from "../../db/schema/workSpace.js";
 
 type WorkspaceInsert = typeof workspaces.$inferInsert;
 
@@ -32,19 +32,30 @@ export class WorkspaceRepository {
     }
 
     async findWorkspaceById(id:string) {
-        const workspace = await this.db.query.workspaces.findFirst({
+        return this.db.query.workspaces.findFirst({
             where: eq(workspaces.id, id),
             with: {
                 members: true,
                 projects: true,
             },
         });
+    }
 
-        if(!workspace){
-            return {}
-        }
-
-        return workspace
+    async findWorkspacesByUserId(userId: string) {
+        return this.db
+            .select({
+                id: workspaces.id,
+                name: workspaces.name,
+                description: workspaces.description,
+                ownerId: workspaces.ownerId,
+                role: workspaceMembers.role,
+                status: workspaceMembers.status,
+                createdAt: workspaces.createdAt,
+                updatedAt: workspaces.updatedAt,
+            })
+            .from(workspaceMembers)
+            .innerJoin(workspaces, eq(workspaceMembers.workspaceId, workspaces.id))
+            .where(eq(workspaceMembers.userId, userId));
     }
 
     async createWorkspace(data: CreateWorkspaceInput) {

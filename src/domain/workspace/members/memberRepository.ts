@@ -1,4 +1,4 @@
-import { NodePgDatabase } from "drizzle-orm/node-postgres";
+import {NodePgDatabase} from "drizzle-orm/node-postgres";
 import {workspaceMembers} from "../../../db/schema/workSpace.js";
 import {schema} from "../../../db/schema/index.js";
 import {eq} from "drizzle-orm";
@@ -12,18 +12,17 @@ export class MemberRepository {
     constructor(private db: NodePgDatabase<typeof schema>) {}
 
     async findMemberByWorkspaceId(workSpaceId : string) {
-        const rows = await this.db.query.workspaceMembers.findMany({
-            where: eq(workspaceMembers.workspaceId , workSpaceId),
+        return this.db.query.workspaceMembers.findMany({
+            where: eq(workspaceMembers.workspaceId, workSpaceId),
+            with: {
+                user: {
+                    columns: {
+                        name: true,
+                        email: true,
+                    }
+                },
+            },
         })
-
-        const totalCount = await this.db
-            .select({ count: schema.workspaces.id })
-            .from(schema.workspaces);
-
-        return {
-            total: totalCount.length,
-            items: rows,
-        };
     }
 
     async createMember(memberData : CreateMemberInput){

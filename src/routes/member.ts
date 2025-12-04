@@ -4,13 +4,12 @@ import {IMemberUpdateData, MemberRole, MemberStatus} from "../domain/workspace/m
 
 const memberRoute : FastifyPluginAsync = async (fastify) : Promise<void> => {
     // ---------------------------------------------------------
-    // GET /member/:workSpaceId
+    // GET /member/:workspaceId
     //    → 워크스페이스 맴버 조회
     // ---------------------------------------------------------
-    fastify.get("/member/workspace/:workSpaceId" ,async  (request,reply) =>{
+    fastify.get("/member/workspace/:workspaceId" ,async  (request,reply) =>{
         const { workspaceId } = request.params as {workspaceId : string};
-
-        return reply.send(workspaceId)
+        return await fastify.services.member.getMemberByWorkSpaceId(workspaceId)
     })
 
     // ---------------------------------------------------------
