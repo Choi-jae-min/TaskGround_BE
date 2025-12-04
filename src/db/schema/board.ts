@@ -5,7 +5,7 @@ import {
     timestamp,
 } from "drizzle-orm/pg-core";
 import {relations} from "drizzle-orm";
-import {project} from "./project.js";
+import {project} from "./project";
 
 export const board = pgTable("board", {
     id: uuid("id").defaultRandom().primaryKey(),
@@ -18,7 +18,6 @@ export const board = pgTable("board", {
 });
 
 export const boardRelations = relations(
-
     board , ({one}) => ({
         project: one(project, {
             fields: [board.projectId],
