@@ -26,7 +26,7 @@ const workspaceRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void>
 
     // ---------------------------------------------------------
     // GET /workspace/:id
-    //    → 단일 조회
+    //    → 단일 조회 with member,project
     // ---------------------------------------------------------
     fastify.get("/workspace/:id", async (request, reply) => {
         try {
