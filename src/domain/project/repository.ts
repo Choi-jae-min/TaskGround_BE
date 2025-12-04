@@ -2,7 +2,9 @@ import { NodePgDatabase } from "drizzle-orm/node-postgres";
 import {schema} from "../../db/schema/index.js";
 import {project} from "../../db/schema/project.js";
 
-type MemberInsert = typeof project.$inferInsert;
+type ProjectInsert = typeof project.$inferInsert;
+
+export type CreateProjectInput = Omit<ProjectInsert, "id" | "createdAt" | "updatedAt">;
 
 export class ProjectRepository {
     constructor(private db: NodePgDatabase<typeof schema>) {}
@@ -29,7 +31,17 @@ export class ProjectRepository {
         };
     }
 
-    async createProject() {
+    async createProject(projectData : CreateProjectInput) {
+        try {
+            const [project] = await this.db
+                .insert(schema.project)
+                .values(projectData)
+                .returning();
 
+            return project
+        }catch (error : any){
+            console.error('error in create member' + (error as Error).message)
+            throw new Error((error as Error).message)
+        }
     }
 }

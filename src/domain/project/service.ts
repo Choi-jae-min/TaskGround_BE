@@ -1,4 +1,4 @@
-import { ProjectRepository } from "./repository.js";
+import {CreateProjectInput, ProjectRepository} from "./repository.js";
 
 export class ProjectService {
     constructor(private projectRepo: ProjectRepository) {}
@@ -11,6 +11,9 @@ export class ProjectService {
         return await this.projectRepo.findMany(limit, offset);
     }
 
+    async createProject(projectData : CreateProjectInput){
+       return await this.projectRepo.createProject(projectData)
+    }
     // async getProjectById(id: string) {
     //     const project = await this.projectRepo.findById(id);
     //
