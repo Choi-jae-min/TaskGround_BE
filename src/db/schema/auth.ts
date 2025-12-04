@@ -5,6 +5,8 @@ import {
     timestamp,
     uniqueIndex,
 } from "drizzle-orm/pg-core";
+import {relations} from "drizzle-orm";
+import {workspaceMembers} from "./workSpace.js";
 
 export const users = pgTable(
     "users",
@@ -24,3 +26,8 @@ export const users = pgTable(
         emailUnique: uniqueIndex("users_email_unique").on(table.email),
     }),
 );
+
+export const usersRelations = relations(users, ({ many }) => ({
+    workspaceMembers: many(workspaceMembers),
+}));
+

@@ -20,7 +20,6 @@ export class WorkspaceService {
 
         const user = await this.authRepo.findUserByEId(workspace?.ownerId)
 
-        console.log( {...workspace , ownerName : user?.name})
         return {...workspace , ownerName : user?.name}
     }
 
