@@ -1,12 +1,12 @@
 import {CreateMemberInput, MemberRepository} from "./memberRepository";
 
-enum MemberRole {
+export enum MemberRole {
     ADMIN = "ADMIN",
     MEMBER = "MEMBER",
     GUEST = "GUEST",
 }
 
-enum MemberStatus {
+export enum MemberStatus {
     INVITED = "INVITED",
     ACTIVE= "ACTIVE",
     LEFT = "LEFT",
