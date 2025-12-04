@@ -1,5 +1,8 @@
 import { NodePgDatabase } from "drizzle-orm/node-postgres";
 import {schema} from "../../db/schema/index.js";
+import {project} from "../../db/schema/project.js";
+
+type MemberInsert = typeof project.$inferInsert;
 
 export class ProjectRepository {
     constructor(private db: NodePgDatabase<typeof schema>) {}
@@ -26,27 +29,7 @@ export class ProjectRepository {
         };
     }
 
-    // async findById(id: string) {
-    //     return await this.db.query.projects.findFirst({
-    //         where: (projects, { eq }) => eq(projects.id, id),
-    //     });
-    // }
-    //
-    // async create(data: InsertProject) {
-    //     return await this.db.insert(schema.projects).values(data).returning();
-    // }
-    //
-    // async update(id: string, data: Partial<InsertProject>) {
-    //     return await this.db
-    //         .update(schema.projects)
-    //         .set(data)
-    //         .where(eq(schema.projects.id, id))
-    //         .returning();
-    // }
-    //
-    // async delete(id: string) {
-    //     return await this.db
-    //         .delete(schema.projects)
-    //         .where(eq(schema.projects.id, id));
-    // }
+    async createProject() {
+
+    }
 }

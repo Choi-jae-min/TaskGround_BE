@@ -2,6 +2,7 @@ import { NodePgDatabase } from "drizzle-orm/node-postgres";
 import {workspaceMembers} from "../../../db/schema/workSpace.js";
 import {schema} from "../../../db/schema/index.js";
 import {eq} from "drizzle-orm";
+import {IMemberUpdateData} from "./memberService.js";
 
 type MemberInsert = typeof workspaceMembers.$inferInsert;
 
@@ -39,4 +40,11 @@ export class MemberRepository {
         }
     }
 
+    async updateMember(memberId: string, input: IMemberUpdateData) {
+        return this.db
+            .update(workspaceMembers)
+            .set(input)
+            .where(eq(workspaceMembers.id, memberId))
+            .returning();
+    }
 }
