@@ -5,7 +5,7 @@ import {eq} from "drizzle-orm";
 
 type MemberInsert = typeof workspaceMembers.$inferInsert;
 
-export type CreateMemberInput = Omit<MemberInsert, "id" | "createdAt" | "updatedAt">;
+export type CreateMemberInput = Omit<MemberInsert, "id" | "createdAt" | "updatedAt" | "status">;
 
 export class MemberRepository {
     constructor(private db: NodePgDatabase<typeof schema>) {}
@@ -23,6 +23,20 @@ export class MemberRepository {
             total: totalCount.length,
             items: rows,
         };
+    }
+
+    async createMember(memberData : CreateMemberInput){
+        try {
+            const [member] = await this.db
+                .insert(schema.workspaceMembers)
+                .values(memberData)
+                .returning();
+
+            return member
+        }catch (error : any) {
+            console.error('error in create member' + (error as Error).message)
+            throw new Error((error as Error).message)
+        }
     }
 
 }
