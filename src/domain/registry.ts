@@ -17,7 +17,7 @@ export const createDomains = (db : any) => {
         repositories: { project: projectRepo, workspace: workspaceRepo },
         services: {
             project: new ProjectService(projectRepo),
-            workspace: new WorkspaceService(workspaceRepo),
+            workspace: new WorkspaceService(workspaceRepo , authRepo),
             auth : new AuthService(authRepo),
             member : new MemberService(memberRepo)
         },

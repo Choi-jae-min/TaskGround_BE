@@ -1,7 +1,8 @@
 import {CreateWorkspaceInput, WorkspaceRepository} from "./workspaceRepository.js";
+import {UserRepository} from "../auth/authRepository.js";
 
 export class WorkspaceService {
-    constructor(private workSpaceRepo: WorkspaceRepository) {}
+    constructor(private workSpaceRepo: WorkspaceRepository , private authRepo : UserRepository) {}
 
     async getWorkspaceByPagination(limit: number, offset: number) {
         if (limit > 100) {
@@ -14,7 +15,13 @@ export class WorkspaceService {
     async getWorkspaceById(id : string){
         if(!id) throw new Error('id is missing')
 
-        return await this.workSpaceRepo.findWorkspaceById(id)
+        const workspace = await this.workSpaceRepo.findWorkspaceById(id)
+        if(!workspace) throw new Error('workspace is missing')
+
+        const user = await this.authRepo.findUserByEId(workspace?.ownerId)
+
+        console.log( {...workspace , ownerName : user?.name})
+        return {...workspace , ownerName : user?.name}
     }
 
     async createWorkspace(data : CreateWorkspaceInput){

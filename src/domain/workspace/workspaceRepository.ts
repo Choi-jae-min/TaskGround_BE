@@ -32,19 +32,13 @@ export class WorkspaceRepository {
     }
 
     async findWorkspaceById(id:string) {
-        const workspace = await this.db.query.workspaces.findFirst({
+        return this.db.query.workspaces.findFirst({
             where: eq(workspaces.id, id),
             with: {
                 members: true,
                 projects: true,
             },
         });
-
-        if(!workspace){
-            return {}
-        }
-
-        return workspace
     }
 
     async createWorkspace(data: CreateWorkspaceInput) {
