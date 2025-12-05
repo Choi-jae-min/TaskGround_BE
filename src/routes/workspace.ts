@@ -11,7 +11,6 @@ const workspaceRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
     }, async (request, reply) => {
         try {
             const userId = request.user!.id;
-            console.log('userid' , userId)
             return await fastify.services.workspace.getWorKSpaceListByMemberId(userId)
         } catch (err) {
             request.log.error({ err }, "Failed to fetch workspaces");
