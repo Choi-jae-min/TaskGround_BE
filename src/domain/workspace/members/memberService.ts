@@ -25,7 +25,7 @@ export class MemberService {
     }
 
     async addMemberToWorkspace(memberData : CreateMemberInput){
-        const isMember = await this.memberRepo.getMemberByWorkSpaceIdAndUserId(memberData.workspaceId,memberData.userId);
+        const [isMember] = await this.memberRepo.getMemberByWorkSpaceIdAndUserId(memberData.workspaceId,memberData.userId);
         if(isMember){
             throw new Error('이미 워크스페이스 에 등록된 맴버입니다.')
         }
