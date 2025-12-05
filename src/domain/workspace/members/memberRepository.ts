@@ -1,7 +1,7 @@
 import {NodePgDatabase} from "drizzle-orm/node-postgres";
 import {workspaceMembers} from "../../../db/schema/workSpace.js";
 import {schema} from "../../../db/schema/index.js";
-import {eq, or} from "drizzle-orm";
+import {and, eq} from "drizzle-orm";
 import {IMemberUpdateData} from "./memberService.js";
 
 type MemberInsert = typeof workspaceMembers.$inferInsert;
@@ -28,7 +28,7 @@ export class MemberRepository {
 
     async getMemberByWorkSpaceIdAndUserId(workSpaceId:string , userId :string){
         return this.db.select().from(workspaceMembers).where(
-            or(
+            and(
                 eq(workspaceMembers.userId, userId),
                 eq(workspaceMembers.workspaceId, workSpaceId)
             )

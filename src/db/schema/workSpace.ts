@@ -18,6 +18,7 @@ export const workspaceMemberStatusEnum = pgEnum("workspace_member_status", [
 ]);
 
 export const workspaceRoleEnum = pgEnum("workspace_role", [
+    "OWNER",
     "ADMIN",
     "MEMBER",
     "GUEST"
