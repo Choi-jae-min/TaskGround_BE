@@ -1,29 +1,17 @@
-import fastify, {FastifyPluginAsync} from "fastify";
+import {FastifyPluginAsync} from "fastify";
 import {CreateMemberInput} from "../domain/workspace/members/memberRepository";
 import {IMemberUpdateData, MemberRole, MemberStatus} from "../domain/workspace/members/memberService";
 
 const memberRoute : FastifyPluginAsync = async (fastify) : Promise<void> => {
-    // ---------------------------------------------------------
-    // GET /member/:workspaceId
-    //    → 워크스페이스 맴버 조회
-    // ---------------------------------------------------------
-    fastify.get("/member/workspace/:workspaceId" ,async  (request,reply) =>{
+    fastify.get("/member/workspace/:workspaceId" ,async  (request) =>{
         const { workspaceId } = request.params as {workspaceId : string};
         return await fastify.services.member.getMemberByWorkSpaceId(workspaceId)
     })
 
-    // ---------------------------------------------------------
-    // GET /member/:id
-    //    → 맴버 조회
-    // ---------------------------------------------------------
-    fastify.get("/member/:id" ,async  (request,reply) =>{
+    fastify.get("/member/:id" ,async  () =>{
     })
 
 
-    // ---------------------------------------------------------
-    // POST /member/:workSpaceId
-    //    → 워크스페이스 맴버 추가
-    // ---------------------------------------------------------
 
     fastify.post("/member/:workspaceId" ,{
         schema : {
@@ -36,7 +24,7 @@ const memberRoute : FastifyPluginAsync = async (fastify) : Promise<void> => {
                 },
             }
         }
-    },async  (request,reply) =>{
+    },async  (request) =>{
         const { workspaceId } = request.params as {workspaceId : string};
         const body = request.body as {userId : string, role : MemberRole}
         console.log('workspaceId' ,workspaceId)
@@ -59,7 +47,7 @@ const memberRoute : FastifyPluginAsync = async (fastify) : Promise<void> => {
                 },
             }
         }
-    },async  (request,reply) =>{
+    },async  (request) =>{
         const { id } = request.params as {id : string};
         const body = request.body as {status?: MemberStatus, role?: MemberRole}
         const memberData : IMemberUpdateData = {

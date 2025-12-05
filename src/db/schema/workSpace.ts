@@ -27,7 +27,7 @@ export const workspaces = pgTable("workspaces", {
     id: uuid("id").defaultRandom().primaryKey(),
     name: text("name").notNull(),
     description: text("description"),
-    ownerId: uuid("owner_id").notNull(),   // users.id 와 FK 걸 예정
+    ownerId: uuid("owner_id").notNull(),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });

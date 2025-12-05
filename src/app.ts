@@ -6,6 +6,7 @@ import { dirname, join } from "path";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import databasePlugin from "./plugins/database.js";
+import authenticatePlugin from "./plugins/authenticate.js";
 import repositoriesPlugin from "./plugins/repositories.js";
 import {swaggerOptions, swaggerUiOptions} from "./lib/swagger.js";
 import fastifyCookie, { FastifyCookieOptions } from "@fastify/cookie";
@@ -23,6 +24,7 @@ const app: FastifyPluginAsync = async (fastify, opts) => {
     await fastify.register(fastifySwaggerUi, swaggerUiOptions)
     await fastify.register(databasePlugin);
     await fastify.register(repositoriesPlugin);
+    await fastify.register(authenticatePlugin);
     fastify.register(fastifyCookie, {
         secret: process.env.COOKIE_SECRET!,
     } as FastifyCookieOptions);
