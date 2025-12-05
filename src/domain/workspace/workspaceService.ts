@@ -26,4 +26,10 @@ export class WorkspaceService {
     async createWorkspace(data : CreateWorkspaceInput){
         return await this.workSpaceRepo.createWorkspace(data)
     }
+
+    async getWorKSpaceListByMemberId(memberId : string){
+        if(!memberId) throw new Error('member id is missing')
+
+        return await this.workSpaceRepo.findWorkspacesByMemberId(memberId);
+    }
 }

@@ -41,7 +41,7 @@ export class WorkspaceRepository {
         });
     }
 
-    async findWorkspacesByUserId(userId: string) {
+    async findWorkspacesByMemberId(memberId: string) {
         return this.db
             .select({
                 id: workspaces.id,
@@ -55,7 +55,7 @@ export class WorkspaceRepository {
             })
             .from(workspaceMembers)
             .innerJoin(workspaces, eq(workspaceMembers.workspaceId, workspaces.id))
-            .where(eq(workspaceMembers.userId, userId));
+            .where(eq(workspaceMembers.userId, memberId));
     }
 
     async createWorkspace(data: CreateWorkspaceInput) {

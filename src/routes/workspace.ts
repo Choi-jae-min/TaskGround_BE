@@ -3,18 +3,14 @@ import { eq } from "drizzle-orm";
 import { workspaces } from "../db/schema/workSpace.js";
 
 const workspaceRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
-    // ---------------------------------------------------------
-    // GET /workspace
-    //    → 전체 목록 + 페이지네이션(limit, offset)
-    // ---------------------------------------------------------
-    fastify.get("/workspace", async (request, reply) => {
+    fastify.get("/workspace/member/:memberId",{
+        schema : {
+            tags : ['workspace'],
+        }
+    }, async (request, reply) => {
         try {
-            const { limit = 10, offset = 0 } = request.query as {
-                limit?: number;
-                offset?: number;
-            };
-
-            return await fastify.services.workspace.getWorkspaceByPagination(limit , offset)
+            const { memberId } = request.params as { memberId: string };
+            return await fastify.services.workspace.getWorKSpaceListByMemberId(memberId)
         } catch (err) {
             request.log.error({ err }, "Failed to fetch workspaces");
             return reply.status(500).send({
@@ -24,10 +20,7 @@ const workspaceRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void>
         }
     });
 
-    // ---------------------------------------------------------
-    // GET /workspace/:id
-    //    → 단일 조회 with member,project
-    // ---------------------------------------------------------
+
     fastify.get("/workspace/:id", async (request, reply) => {
         try {
             const { id } = request.params as { id: string };
@@ -42,10 +35,6 @@ const workspaceRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void>
         }
     });
 
-    // ---------------------------------------------------------
-    // POST /workspace
-    //    → 생성
-    // ---------------------------------------------------------
     fastify.post("/workspace",{
         schema : {
             tags : ['workspace'],
@@ -72,10 +61,6 @@ const workspaceRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void>
         }
     });
 
-    // ---------------------------------------------------------
-    // PATCH /workspace/:id
-    //    → 수정
-    // ---------------------------------------------------------
     fastify.patch("/workspace/:id", async (request, reply) => {
         try {
             const { id } = request.params as { id: string };
@@ -108,10 +93,6 @@ const workspaceRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void>
         }
     });
 
-    // ---------------------------------------------------------
-    // DELETE /workspace/:id
-    //    → 삭제
-    // ---------------------------------------------------------
     fastify.delete("/workspace/:id", async (request, reply) => {
         try {
             const { id } = request.params as { id: string };
