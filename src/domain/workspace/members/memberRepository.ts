@@ -1,7 +1,7 @@
 import {NodePgDatabase} from "drizzle-orm/node-postgres";
 import {workspaceMembers} from "../../../db/schema/workSpace.js";
 import {schema} from "../../../db/schema/index.js";
-import {and, eq, or} from "drizzle-orm";
+import {and, eq} from "drizzle-orm";
 import {IMemberUpdateData} from "./memberService.js";
 
 type MemberInsert = typeof workspaceMembers.$inferInsert;
