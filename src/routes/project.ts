@@ -1,10 +1,6 @@
 import { FastifyPluginAsync } from "fastify";
 
-const workspaceRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
-    // ---------------------------------------------------------
-    // GET /project
-    //    → 전체 목록 + 페이지네이션(limit, offset)
-    // ---------------------------------------------------------
+const projectRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
     fastify.get("/project", async (request, reply) => {
         try {
             const { limit = 10, offset = 0 } = request.query as {
@@ -49,4 +45,4 @@ const workspaceRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void>
     })
 };
 
-export default workspaceRoutes;
+export default projectRoutes;

@@ -2,7 +2,7 @@ import { FastifyPluginAsync } from "fastify";
 import { eq } from "drizzle-orm";
 import { workspaces } from "../db/schema/workSpace.js";
 
-const workspaceRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
+const workspaceRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
     fastify.get("/workspace/member/:memberId",{
         schema : {
             tags : ['workspace'],
