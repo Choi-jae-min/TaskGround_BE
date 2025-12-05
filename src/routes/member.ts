@@ -27,7 +27,6 @@ const memberRoute : FastifyPluginAsync = async (fastify) : Promise<void> => {
     },async  (request) =>{
         const { workspaceId } = request.params as {workspaceId : string};
         const body = request.body as {userId : string, role : MemberRole}
-        console.log('workspaceId' ,workspaceId)
         const memberData : CreateMemberInput = {
             workspaceId : workspaceId,
             userId : body.userId,

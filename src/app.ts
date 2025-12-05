@@ -14,7 +14,7 @@ import fastifyCookie, { FastifyCookieOptions } from "@fastify/cookie";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const app: FastifyPluginAsync = async (fastify, opts) => {
+const app: FastifyPluginAsync = async (fastify) => {
     await fastify.register(cors, {
         origin: true,
         // origin: ["http://localhost:3000", "http://127.0.0.1:3000"], // 이런 식으로 제한도 가능
