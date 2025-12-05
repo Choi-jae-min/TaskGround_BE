@@ -1,5 +1,5 @@
 import {NodePgDatabase} from "drizzle-orm/node-postgres";
-import {workspaceMembers, workspaces} from "../../../db/schema/workSpace.js";
+import {workspaceMembers} from "../../../db/schema/workSpace.js";
 import {schema} from "../../../db/schema/index.js";
 import {eq, or} from "drizzle-orm";
 import {IMemberUpdateData} from "./memberService.js";
