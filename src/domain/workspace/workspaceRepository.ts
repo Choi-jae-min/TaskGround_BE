@@ -56,10 +56,7 @@ export class WorkspaceRepository {
             .from(workspaceMembers)
             .innerJoin(workspaces, eq(workspaceMembers.workspaceId, workspaces.id))
             .where(
-                or(
-                    eq(workspaceMembers.userId, memberId),
-                    eq(workspaces.ownerId, memberId)
-                )
+                eq(workspaceMembers.userId, memberId),
             );
     }
 

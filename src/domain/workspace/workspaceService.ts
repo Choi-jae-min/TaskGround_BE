@@ -1,8 +1,9 @@
 import {CreateWorkspaceInput, WorkspaceRepository} from "./workspaceRepository.js";
 import {UserRepository} from "../auth/authRepository.js";
+import {CreateMemberInput, MemberRepository} from "./members/memberRepository";
 
 export class WorkspaceService {
-    constructor(private workSpaceRepo: WorkspaceRepository , private authRepo : UserRepository) {}
+    constructor(private workSpaceRepo: WorkspaceRepository , private authRepo : UserRepository, private memberRepo : MemberRepository) {}
 
     async getWorkspaceByPagination(limit: number, offset: number) {
         if (limit > 100) {
@@ -24,7 +25,21 @@ export class WorkspaceService {
     }
 
     async createWorkspace(data : CreateWorkspaceInput){
-        return await this.workSpaceRepo.createWorkspace(data)
+        try {
+            const createdWorkspace = await this.workSpaceRepo.createWorkspace(data);
+            if(createdWorkspace) {
+                const memberData : CreateMemberInput = {
+                    workspaceId : createdWorkspace.id,
+                    userId : createdWorkspace.ownerId,
+                    role : "OWNER"
+                }
+                await this.memberRepo.createMember(memberData)
+            }
+            return createdWorkspace
+        }catch (error){
+            console.error('error in create member' + (error as Error).message)
+            throw new Error((error as Error).message)
+        }
     }
 
     async getWorKSpaceListByMemberId(memberId : string){
