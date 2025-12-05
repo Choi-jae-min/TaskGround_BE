@@ -24,10 +24,10 @@ const authenticatePlugin: FastifyPluginAsync = async (fastify) => {
                 if (!accessToken) {
                     return reply.status(401).send({ ok: false, error: "토큰이 없습니다." });
                 }
-
+                console.log('accessToken' , accessToken)
                 const payload = jwt.verify(
                     accessToken,
-                    process.env.JWT_ACCESS_SECRET as string
+                    process.env.JWT_SECRET as string
                 ) as { sub: string; email?: string };
 
                 request.user = {

@@ -1,6 +1,6 @@
 import { NodePgDatabase } from "drizzle-orm/node-postgres";
 import {schema} from "../../db/schema/index.js";
-import {eq} from "drizzle-orm";
+import {eq, or} from "drizzle-orm";
 import {workspaceMembers, workspaces} from "../../db/schema/workSpace.js";
 
 type WorkspaceInsert = typeof workspaces.$inferInsert;
@@ -55,7 +55,12 @@ export class WorkspaceRepository {
             })
             .from(workspaceMembers)
             .innerJoin(workspaces, eq(workspaceMembers.workspaceId, workspaces.id))
-            .where(eq(workspaceMembers.userId, memberId));
+            .where(
+                or(
+                    eq(workspaceMembers.userId, memberId),
+                    eq(workspaces.ownerId, memberId)
+                )
+            );
     }
 
     async createWorkspace(data: CreateWorkspaceInput) {

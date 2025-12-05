@@ -3,14 +3,16 @@ import { eq } from "drizzle-orm";
 import { workspaces } from "../db/schema/workSpace.js";
 
 const workspaceRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
-    fastify.get("/workspace/member/:memberId",{
+    fastify.get("/workspace/me",{
         schema : {
             tags : ['workspace'],
-        }
+        },
+        preHandler : [fastify.authenticate]
     }, async (request, reply) => {
         try {
-            const { memberId } = request.params as { memberId: string };
-            return await fastify.services.workspace.getWorKSpaceListByMemberId(memberId)
+            const userId = request.user!.id;
+            console.log('userid' , userId)
+            return await fastify.services.workspace.getWorKSpaceListByMemberId(userId)
         } catch (err) {
             request.log.error({ err }, "Failed to fetch workspaces");
             return reply.status(500).send({
