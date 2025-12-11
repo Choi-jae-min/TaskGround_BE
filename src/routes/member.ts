@@ -1,6 +1,6 @@
 import {FastifyPluginAsync} from "fastify";
-import {CreateMemberInput} from "../domain/workspace/members/memberRepository";
-import {IMemberUpdateData, MemberRole, MemberStatus} from "../domain/workspace/members/memberService";
+import {CreateMemberInput} from "../domain/workspace/members/memberRepository.js";
+import {IMemberUpdateData, MemberRole, MemberStatus} from "../domain/workspace/members/memberService.js";
 
 const memberRoute : FastifyPluginAsync = async (fastify) : Promise<void> => {
     fastify.get("/member/workspace/:workspaceId" ,async  (request) =>{

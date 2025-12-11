@@ -1,4 +1,4 @@
-import {UserRepository} from "./authRepository";
+import {UserRepository} from "./authRepository.js";
 import bcrypt from "bcryptjs";
 import {signAccessToken, signRefreshToken} from "../../lib/jwt.js";
 

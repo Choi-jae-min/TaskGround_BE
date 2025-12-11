@@ -1,6 +1,6 @@
 import {CreateWorkspaceInput, WorkspaceRepository} from "./workspaceRepository.js";
 import {UserRepository} from "../auth/authRepository.js";
-import {CreateMemberInput, MemberRepository} from "./members/memberRepository";
+import {CreateMemberInput, MemberRepository} from "./members/memberRepository.js";
 
 export class WorkspaceService {
     constructor(private workSpaceRepo: WorkspaceRepository , private authRepo : UserRepository, private memberRepo : MemberRepository) {}
