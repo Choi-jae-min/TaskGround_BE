@@ -7,8 +7,8 @@ import {
     uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-import {project} from "./project.js";
-import {users} from "./auth.js";
+import {project} from "./project";
+import {users} from "./auth";
 
 export const workspaceMemberStatusEnum = pgEnum("workspace_member_status", [
     "INVITED",

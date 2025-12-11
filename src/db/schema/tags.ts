@@ -6,26 +6,23 @@ import {
 } from "drizzle-orm/pg-core";
 import {relations} from "drizzle-orm";
 import {project} from "./project";
-import {task} from "./task";
 
-export const board = pgTable("board", {
+export const tag = pgTable("tag", {
     id: uuid("id").defaultRandom().primaryKey(),
     name: text("name").notNull(),
     projectId: uuid("project_id")
         .notNull()
         .references(() => project.id, { onDelete: "cascade" }),
-    color : text("text").default("gray"),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });
 
-export const boardRelations = relations(
-    board , ({one,many}) => ({
+export const tagRelations = relations(
+    tag , ({one}) => ({
         project: one(project, {
-            fields: [board.projectId],
+            fields: [tag.projectId],
             references: [project.id],
         }),
-        task : many(task)
     })
 )
 

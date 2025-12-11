@@ -6,7 +6,7 @@ import {
     uniqueIndex,
 } from "drizzle-orm/pg-core";
 import {relations} from "drizzle-orm";
-import {workspaceMembers} from "./workSpace.js";
+import {workspaceMembers} from "./workSpace";
 
 export const users = pgTable(
     "users",
