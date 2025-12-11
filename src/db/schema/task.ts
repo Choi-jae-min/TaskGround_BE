@@ -23,7 +23,7 @@ export const task = pgTable("task", {
 
 export const taskRelations = relations(
     task , ({one}) => ({
-        project: one(board, {
+        board: one(board, {
             fields: [task.boardId],
             references: [board.id],
         }),
