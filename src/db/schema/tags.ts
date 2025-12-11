@@ -5,7 +5,7 @@ import {
     timestamp,
 } from "drizzle-orm/pg-core";
 import {relations} from "drizzle-orm";
-import {project} from "./project";
+import {project} from "./project.js";
 
 export const tag = pgTable("tag", {
     id: uuid("id").defaultRandom().primaryKey(),

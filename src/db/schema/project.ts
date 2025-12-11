@@ -5,9 +5,9 @@ import {
     timestamp,
 } from "drizzle-orm/pg-core";
 import {relations} from "drizzle-orm";
-import {workspaces} from "./workSpace";
-import {board} from "./board";
-import {tag} from "./tags";
+import {workspaces} from "./workSpace.js";
+import {board} from "./board.js";
+import {tag} from "./tags.js";
 
 export const project = pgTable("project", {
     id: uuid("id").defaultRandom().primaryKey(),
