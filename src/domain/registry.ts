@@ -6,18 +6,22 @@ import {UserRepository} from "./auth/authRepository.js";
 import {AuthService} from "./auth/authService.js";
 import {MemberRepository} from "./workspace/members/memberRepository.js";
 import {MemberService} from "./workspace/members/memberService.js";
+import {BoardRepository} from "./board/boardRepository.js";
+import {BoardService} from "./board/boardService.js";
 
 export const createDomains = (db : any) => {
     const projectRepo = new ProjectRepository(db);
     const workspaceRepo = new WorkspaceRepository(db);
     const authRepo = new UserRepository(db);
     const memberRepo = new MemberRepository(db);
+    const boardRepo = new BoardRepository(db);
 
     return {
         repositories: { project: projectRepo, workspace: workspaceRepo },
         services: {
             project: new ProjectService(projectRepo),
             workspace: new WorkspaceService(workspaceRepo , authRepo , memberRepo),
+            board : new BoardService(boardRepo),
             auth : new AuthService(authRepo),
             member : new MemberService(memberRepo)
         },
