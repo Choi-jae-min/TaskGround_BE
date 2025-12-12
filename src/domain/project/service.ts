@@ -14,14 +14,12 @@ export class ProjectService {
     async createProject(projectData : CreateProjectInput){
        return await this.projectRepo.createProject(projectData)
     }
-    // async getProjectById(id: string) {
-    //     const project = await this.projectRepo.findById(id);
-    //
-    //     if (!project) {
-    //         throw new Error("Project not found");
-    //     }
-    //
-    //     // 추가 비즈니스 로직 (예: 권한 체크, 로깅 등)
-    //     return project;
-    // }
+
+    async getProjectById(id : string){
+        try {
+            return await this.projectRepo.getProjectById(id);
+        }catch (error){
+            throw new Error((error as Error).message)
+        }
+    }
 }
