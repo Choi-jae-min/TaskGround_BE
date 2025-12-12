@@ -1,7 +1,11 @@
 import { FastifyPluginAsync } from "fastify";
 
 const projectRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
-    fastify.get("/project", async (request, reply) => {
+    fastify.get("/project/list",{
+        schema : {
+            tags : ['project'],
+        }
+    }, async (request, reply) => {
         try {
             const { limit = 10, offset = 0 } = request.query as {
                 limit?: number;
@@ -14,6 +18,25 @@ const projectRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
             return reply.status(500).send({
                 ok: false,
                 error: (err as Error).message,
+            });
+        }
+    });
+
+    fastify.get("/project/:id",{
+        schema : {
+            tags : ['project'],
+        }
+    }, async (request, reply) => {
+        try {
+            const { id } = request.params as { id: string };
+
+            return await fastify.services.project.getProjectById(id);
+
+        } catch (err) {
+            request.log.error({ err }, "Failed to fetch project");
+            return reply.status(500).send({
+                ok: false,
+                error: "Internal Server Error"
             });
         }
     });

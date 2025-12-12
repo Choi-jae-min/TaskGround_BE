@@ -1,6 +1,7 @@
-import { NodePgDatabase } from "drizzle-orm/node-postgres";
+import {NodePgDatabase} from "drizzle-orm/node-postgres";
 import {schema} from "../../db/schema/index.js";
 import {project} from "../../db/schema/project.js";
+import {eq} from "drizzle-orm";
 
 type ProjectInsert = typeof project.$inferInsert;
 
@@ -29,6 +30,21 @@ export class ProjectRepository {
             },
             items: rows,
         };
+    }
+
+    async getProjectById(id :string){
+        const isProject = await this.db.query.project.findFirst({
+            where: eq(project.id, id),
+            with: {
+                board: {
+                    with : {
+                        task : true
+                    }
+                }
+            }
+        })
+        if (isProject) return isProject;
+        throw new Error(`project id :${id} is not found`)
     }
 
     async createProject(projectData : CreateProjectInput) {
