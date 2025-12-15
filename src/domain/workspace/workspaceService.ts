@@ -13,15 +13,16 @@ export class WorkspaceService {
         return await this.workSpaceRepo.findWorkSpacePagination(limit,offset)
     }
 
-    async getWorkspaceById(id : string){
-        if(!id) throw new Error('id is missing')
+    async getWorkspaceById(id : string , userId : string){
+            if(!id) throw new Error('id is missing')
+            const [isMember] = await this.memberRepo.getMemberByWorkSpaceIdAndUserId(id,userId);
 
-        const workspace = await this.workSpaceRepo.findWorkspaceById(id)
-        if(!workspace) throw new Error('workspace is missing')
+            if(!isMember.id) throw new Error('is not member')
+            const workspace = await this.workSpaceRepo.findWorkspaceById(id)
 
-        const user = await this.authRepo.findUserByEId(workspace?.ownerId)
-
-        return {...workspace , ownerName : user?.name}
+            if(!workspace) throw new Error('workspace is missing')
+            const user = await this.authRepo.findUserByEId(workspace?.ownerId)
+            return {...workspace , ownerName : user?.name}
     }
 
     async createWorkspace(data : CreateWorkspaceInput){
