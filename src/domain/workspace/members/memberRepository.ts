@@ -6,7 +6,7 @@ import {IMemberUpdateData} from "./memberService.js";
 
 type MemberInsert = typeof workspaceMembers.$inferInsert;
 
-export type CreateMemberInput = Omit<MemberInsert, "id" | "createdAt" | "updatedAt" | "status">;
+export type CreateMemberInput = Omit<MemberInsert, "id" | "createdAt" | "updatedAt">;
 
 export class MemberRepository {
     constructor(private db: NodePgDatabase<typeof schema>) {}
