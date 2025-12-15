@@ -30,7 +30,8 @@ const memberRoute : FastifyPluginAsync = async (fastify) : Promise<void> => {
         const memberData : CreateMemberInput = {
             workspaceId : workspaceId,
             userId : body.userId,
-            role : body.role
+            role : body.role,
+            status : "INVITED"
         }
         return await fastify.services.member.addMemberToWorkspace(memberData)
     })

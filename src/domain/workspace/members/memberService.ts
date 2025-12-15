@@ -1,4 +1,4 @@
-import {CreateMemberInput, MemberRepository} from "./memberRepository";
+import {CreateMemberInput, MemberRepository} from "./memberRepository.js";
 
 export enum MemberRole {
     ADMIN = "ADMIN",
