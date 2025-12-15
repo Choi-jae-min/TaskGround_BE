@@ -31,7 +31,8 @@ export class WorkspaceService {
                 const memberData : CreateMemberInput = {
                     workspaceId : createdWorkspace.id,
                     userId : createdWorkspace.ownerId,
-                    role : "OWNER"
+                    role : "OWNER",
+                    status : "ACTIVE"
                 }
                 await this.memberRepo.createMember(memberData)
             }
