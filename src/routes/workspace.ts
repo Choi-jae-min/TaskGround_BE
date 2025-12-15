@@ -22,11 +22,16 @@ const workspaceRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
     });
 
 
-    fastify.get("/workspace/:id", async (request, reply) => {
+    fastify.get("/workspace/:id",{
+        schema : {
+            tags : ['workspace']
+        },
+        preHandler :[fastify.authenticate]
+    } ,async (request, reply) => {
         try {
             const { id } = request.params as { id: string };
-
-            return await fastify.services.workspace.getWorkspaceById(id)
+            const userId = request.user!.id;
+            return await fastify.services.workspace.getWorkspaceById(id,userId)
         } catch (err) {
             request.log.error({ err }, "Failed to fetch workspace by id");
             return reply.status(500).send({
@@ -63,7 +68,11 @@ const workspaceRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
         }
     });
 
-    fastify.patch("/workspace/:id", async (request, reply) => {
+    fastify.patch("/workspace/:id",{
+        schema : {
+            tags : ['workspace']
+        }
+    }, async (request, reply) => {
         try {
             const { id } = request.params as { id: string };
             const body = request.body as { name?: string; description?: string };
@@ -95,7 +104,11 @@ const workspaceRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
         }
     });
 
-    fastify.delete("/workspace/:id", async (request, reply) => {
+    fastify.delete("/workspace/:id",{
+        schema : {
+            tags : ['workspace']
+        }
+    }, async (request, reply) => {
         try {
             const { id } = request.params as { id: string };
 
