@@ -41,18 +41,19 @@ const workspaceRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
             tags : ['workspace'],
             body : {
                 type: "object",
-                required: ["name", "ownerId"],
+                required: ["name"],
                 properties: {
                     name: { type: "string" },
-                    ownerId: { type: "string"},
                     description: { type: "string" },
                 },
             }
         },
+        preHandler : [fastify.authenticate]
     }, async (request, reply) => {
         try {
-            const body = request.body as { name: string; ownerId:string; description?: string };
-            return await fastify.services.workspace.createWorkspace(body)
+            const userId = request.user!.id;
+            const body = request.body as { name: string; description?: string };
+            return await fastify.services.workspace.createWorkspace({...body , ownerId : userId})
         } catch (err) {
             request.log.error({ err }, "Failed to create workspace");
             return reply.status(500).send({
