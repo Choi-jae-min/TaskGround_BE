@@ -12,6 +12,7 @@ import {tag} from "./tags.js";
 export const project = pgTable("project", {
     id: uuid("id").defaultRandom().primaryKey(),
     name: text("name").notNull(),
+    description : text("description"),
     workspaceId: uuid("workspace_id")
         .notNull()
         .references(() => workspaces.id, { onDelete: "cascade" }),

@@ -49,13 +49,14 @@ const projectRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
                 required: ["name", "workspaceId"],
                 properties: {
                     name: { type: "string" },
+                    description: { type: "string" },
                     workspaceId: { type: "string"},
                 },
             }
         }
     } ,async (request ,reply) => {
         try {
-            const body = request.body as { name : string , workspaceId : string}
+            const body = request.body as { name : string , description :string ,workspaceId : string}
 
             return await fastify.services.project.createProject(body)
         }catch (err){
