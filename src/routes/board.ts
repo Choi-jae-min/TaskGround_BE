@@ -52,12 +52,8 @@ const boardRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
     } ,async (request ,reply) => {
         try {
             const body = request.body as { name : string , projectId : string , color?:string}
-
-            const createdBoard = await fastify.services.board.createBoard(body)
-            return reply.send({
-                ok: true,
-                data: createdBoard
-            });
+            console.log('body' ,body)
+            return  await fastify.services.board.createBoard(body)
         }catch (err){
             request.log.error({ err }, "Failed to fetch workspaces");
             return reply.status(500).send({
