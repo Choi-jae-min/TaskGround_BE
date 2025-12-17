@@ -6,6 +6,7 @@ import {
 } from "drizzle-orm/pg-core";
 import {relations} from "drizzle-orm";
 import {board} from "./board.js";
+import {block} from "./block.js";
 
 export const task = pgTable("task", {
     id: uuid("id").defaultRandom().primaryKey(),
@@ -22,10 +23,11 @@ export const task = pgTable("task", {
 });
 
 export const taskRelations = relations(
-    task , ({one}) => ({
+    task , ({many,one}) => ({
         board: one(board, {
             fields: [task.boardId],
             references: [board.id],
         }),
+        block : many(block)
     })
 )
