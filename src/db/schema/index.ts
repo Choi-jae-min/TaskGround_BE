@@ -4,6 +4,7 @@ import * as projectSchema from "./project.js";
 import * as authSchema from "./auth.js"
 import * as taskSchema from "./task.js"
 import * as tagSchema from "./tags.js"
+import * as blockSchema from "./block.js"
 
 export const schema = {
     ...workspaceSchema,
@@ -12,4 +13,5 @@ export const schema = {
     ...authSchema,
     ...taskSchema,
     ...tagSchema,
+    ...blockSchema
 };
