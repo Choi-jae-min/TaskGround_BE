@@ -3,6 +3,7 @@ import {
     uuid,
     text,
     timestamp,
+    integer
 } from "drizzle-orm/pg-core";
 import {relations} from "drizzle-orm";
 import {board} from "./board.js";
@@ -17,6 +18,7 @@ export const task = pgTable("task", {
     boardId: uuid("board_id")
         .notNull()
         .references(() => board.id, { onDelete: "cascade" }),
+    version : integer("version").notNull(),
     dueDate: timestamp("due_date",{withTimezone : true }).defaultNow(),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
