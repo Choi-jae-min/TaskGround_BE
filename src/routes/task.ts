@@ -50,8 +50,8 @@ const taskRoute: FastifyPluginAsync = async (fastify) : Promise<void> => {
         try {
             const { id } = request.params as { id: string };
             const body = request.body as UpdateTaskInput
+            console.log('body' , body)
             const result = await fastify.services.task.updateTask(id, body);
-            console.log('result' , result)
             if (result?.ok === false) {
                 if (result.code === "NOT_FOUND") {
                     return reply.code(404).send({ ok: false, error: "NOT_FOUND" });
