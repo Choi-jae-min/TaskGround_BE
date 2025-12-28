@@ -30,6 +30,7 @@ export class TaskRepository{
             .update(task)
             .set({
                 ...body,
+                dueDate : body.dueDate && new Date(body.dueDate),
                 updatedAt: new Date(),
                 version: new_version,
             })
