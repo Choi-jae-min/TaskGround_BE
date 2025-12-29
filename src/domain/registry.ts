@@ -27,7 +27,7 @@ export const createDomains = (db : any) => {
             board : new BoardService(boardRepo),
             task : new TaskService(taskRepo),
             auth : new AuthService(authRepo),
-            member : new MemberService(memberRepo)
+            member : new MemberService(memberRepo , projectRepo)
         },
     };
 };
