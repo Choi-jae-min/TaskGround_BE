@@ -32,6 +32,21 @@ export class ProjectRepository {
         };
     }
 
+    async getWorkspaceIdByProjectId(projectId : string) {
+        const projectRow = await this.db.query.project.findFirst({
+            where: eq(project.id, projectId),
+            columns: {
+                workspaceId: true,
+            },
+        });
+
+        if (!projectRow) {
+            throw new Error(`projectId ${projectId} not found`);
+        }
+
+        return projectRow.workspaceId;
+    }
+
     async getProjectById(id :string){
         const isProject = await this.db.query.project.findFirst({
             where: eq(project.id, id),

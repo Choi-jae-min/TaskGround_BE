@@ -3,16 +3,23 @@ import {CreateMemberInput} from "../domain/workspace/members/memberRepository.js
 import {IMemberUpdateData, MemberRole, MemberStatus} from "../domain/workspace/members/memberService.js";
 
 const memberRoute : FastifyPluginAsync = async (fastify) : Promise<void> => {
-    fastify.get("/member/workspace/:workspaceId" ,async  (request) =>{
+    fastify.get("/member/workspace/:workspaceId",{
+        schema : {
+            tags : ['member']
+        }
+    } ,async  (request) =>{
         const { workspaceId } = request.params as {workspaceId : string};
-        return await fastify.services.member.getMemberByWorkSpaceId(workspaceId)
+        return fastify.services.member.getMemberByWorkSpaceId(workspaceId);
     })
 
-    fastify.get("/member/:id" ,async  () =>{
+    fastify.get("/member/project/:projectId" ,{
+        schema : {
+            tags : ['member']
+        }
+    } ,async  (request) =>{
+        const { projectId } = request.params as {projectId : string};
+        return fastify.services.member.getMemberByProjectId(projectId);
     })
-
-
-
     fastify.post("/member/:workspaceId" ,{
         schema : {
             tags : ['member'],
