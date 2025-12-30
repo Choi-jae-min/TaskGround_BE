@@ -46,12 +46,6 @@ export class WorkspaceRepository {
             .select({
                 id: workspaces.id,
                 name: workspaces.name,
-                description: workspaces.description,
-                ownerId: workspaces.ownerId,
-                role: workspaceMembers.role,
-                status: workspaceMembers.status,
-                createdAt: workspaces.createdAt,
-                updatedAt: workspaces.updatedAt,
             })
             .from(workspaceMembers)
             .innerJoin(workspaces, eq(workspaceMembers.workspaceId, workspaces.id))
