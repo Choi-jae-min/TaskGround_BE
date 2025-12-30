@@ -1,7 +1,29 @@
 import {FastifyPluginAsync} from "fastify";
 
-const authRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
-    fastify.post("/login", async (request, reply) => {
+const authRoutes: FastifyPluginAsync = async (fastify): Promise<void> => {
+    fastify.get("/user" ,{
+        schema : {
+            tags : ['auth']
+        },
+        preHandler : [fastify.authenticate]
+    }, async (request ,reply) => {
+        const userId = request.user!.id;
+        const userData = await fastify.services.auth.getUserData(userId);
+        const workSpaceList =  await fastify.services.member.getWorkspaceIdsByUserId(userId);
+        const projectCount = await fastify.services.project.getProjectCountsByWorkspace(workSpaceList);
+        return reply.send({
+            projectCount,
+            userData,
+            workSpaceList,
+            ok: true,
+        });
+    })
+
+    fastify.post("/login",{
+        schema : {
+            tags : ['auth']
+        }
+    }, async (request, reply) => {
         try {
             const { email, password } = request.body as {
                 email: string;
@@ -39,7 +61,11 @@ const authRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         }
     });
 
-    fastify.post("/logOut", async (request, reply) => {
+    fastify.post("/logOut",{
+        schema : {
+            tags :['auth']
+        }
+    }, async (request, reply) => {
         try {
             return {ok : false}
         } catch (err) {
@@ -52,7 +78,11 @@ const authRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     });
 
 
-    fastify.post("/signUp", async (request, reply) => {
+    fastify.post("/signUp",{
+        schema : {
+            tags : ['auth']
+        }
+    }, async (request, reply) => {
         try {
             const { email, password,name } = request.body as {
                 email: string;
@@ -71,7 +101,11 @@ const authRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         }
     });
 
-    fastify.post("/signOut", async (request, reply) => {
+    fastify.post("/signOut", {
+        schema : {
+            tags : ['auth']
+        }
+    },async (request, reply) => {
         try {
 
             //로그인 로직

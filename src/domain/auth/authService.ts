@@ -13,7 +13,9 @@ export class AuthService {
         return !!isUser
     }
 
-
+    async getUserData(userId : string){
+        return this.userRepo.findUserByEId(userId)
+    }
 
     async signUp(email : string , password : string , name : string){
         const isValidEmail = await this.checkIsValidEmail(email)

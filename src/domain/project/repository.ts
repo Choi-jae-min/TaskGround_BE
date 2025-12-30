@@ -47,6 +47,16 @@ export class ProjectRepository {
         return projectRow.workspaceId;
     }
 
+    async getProjectCountByWorkspaceId(workspaceId :string){
+        const isProject = await this.db.query.project.findMany({
+            where: eq(project.workspaceId, workspaceId),
+            columns : {
+                id :true
+            }
+        })
+        return isProject.length;
+    }
+
     async getProjectById(id :string){
         const isProject = await this.db.query.project.findFirst({
             where: eq(project.id, id),

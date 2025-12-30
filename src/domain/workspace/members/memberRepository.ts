@@ -25,6 +25,14 @@ export class MemberRepository {
         })
     }
 
+    async getWorkspaceIdsByUserId(userId: string) {
+        const rows = await this.db
+            .select({ workspaceId: workspaceMembers.workspaceId })
+            .from(workspaceMembers)
+            .where(eq(workspaceMembers.userId, userId));
+
+        return [...new Set(rows.map(r => r.workspaceId))];
+    }
 
     async getMemberByWorkSpaceIdAndUserId(workSpaceId:string , userId :string){
         return this.db.select().from(workspaceMembers).where(
