@@ -25,6 +25,10 @@ export class MemberService {
         return this.memberRepo.findMemberByWorkspaceId(workSpaceId);
     }
 
+    async getWorkspaceIdsByUserId(userId : string){
+        return this.memberRepo.getWorkspaceIdsByUserId(userId)
+    }
+
     async addMemberToWorkspace(memberData : CreateMemberInput){
         const [isMember] = await this.memberRepo.getMemberByWorkSpaceIdAndUserId(memberData.workspaceId,memberData.userId);
         if(isMember){

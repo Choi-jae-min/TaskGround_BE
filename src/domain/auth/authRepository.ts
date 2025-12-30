@@ -18,7 +18,10 @@ export class UserRepository {
 
     async findUserByEId(id : string ) {
         return this.db.query.users.findFirst({
-            where: eq(users.id, id)
+            where: eq(users.id, id),
+            columns: {
+                passwordHash: false,
+            },
         });
     }
 

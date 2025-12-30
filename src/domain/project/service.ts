@@ -11,6 +11,16 @@ export class ProjectService {
         return await this.projectRepo.findMany(limit, offset);
     }
 
+    async getProjectCountsByWorkspace(workspaceId : string[]){
+        const counts = await Promise.all(
+            workspaceId.map((wId) =>
+                this.projectRepo.getProjectCountByWorkspaceId(wId)
+            )
+        );
+
+        return counts.reduce((sum, count) => sum + count, 0);
+    }
+
     async createProject(projectData : CreateProjectInput){
        return await this.projectRepo.createProject(projectData)
     }
